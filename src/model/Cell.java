@@ -30,7 +30,7 @@ public class Cell {
     public Cell(int x_coord, int y_coord, Environment w) {
         pos = new Position(x_coord, y_coord, w);
         agent = null;
-        cell_number = (y_coord * w.getSizeX()) + x_coord;
+        cell_number = 1 + (y_coord * w.getSizeX()) + x_coord;
     }
 
     /**
@@ -116,9 +116,17 @@ public class Cell {
      */
     public String getDisplayName() {
         if (agent == null) {
-            return " "; }
+            return ""+cell_number; }
         else {
             return agent.getDisplayName(); }
+    }
+
+    public String getDisplayConsole() {
+        if (agent == null) {
+            return "  "; }
+        else {
+            return agent.getDisplayConsole(); }
+
     }
 
     /**

@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class AgentTile implements Runnable {
+public class AgentTile extends Thread {
 
     /**
      * Compte le nombre d'agents instanciés, pour avoir un ID unique
      */
-    private static long _agentNbCounter;
+    private static long _agentNbCounter = 1;
 
     /**
      * Id et numéro de tuile de l'agent
@@ -249,6 +249,10 @@ public class AgentTile implements Runnable {
         return ""+_agent_id;
     }
 
+    public String getDisplayConsole() {
+        return((_agent_id>9)?""+_agent_id:"0" + _agent_id);
+    }
+
     /**
      * @return l'id de l'agent
      */
@@ -301,5 +305,9 @@ public class AgentTile implements Runnable {
         clone.availableNearbyCells = new ArrayList<>(); clone.availableNearbyCells.addAll(this.availableNearbyCells);
         clone.nearbyAgents = new ArrayList<>(); clone.nearbyAgents.addAll(this.nearbyAgents);
         return clone;
+    }
+
+    public static void resetAgentCounter() {
+        _agentNbCounter = 1;
     }
 }

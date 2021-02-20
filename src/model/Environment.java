@@ -41,7 +41,9 @@ public class Environment extends Observable {
      * @param size_y la taille sur l'axe Nord-Sud de l'environnement
      */
     public Environment(int size_x, int size_y, int nbAgents) {
-        _size_x = size_x; _size_y = size_y; _nbAgents = nbAgents;
+        _size_x = size_x;
+        _size_y = size_y;
+        _nbAgents = (nbAgents > (size_x * size_y - 1))?(size_x * size_y - 1):nbAgents;
         _initDone = false;
     }
 
@@ -53,6 +55,7 @@ public class Environment extends Observable {
         _nbMoves = 0;
         _taquinFinished = false;
         _taquin = new ArrayList<>();
+        AgentTile.resetAgentCounter();
         for (int lines = 0; lines < _size_y; lines++) {
             List<Cell> line = new ArrayList<>();
             for(int columns = 0; columns < _size_x; columns++) {
@@ -76,6 +79,7 @@ public class Environment extends Observable {
                 nbAgentsAdded++; } }
         _actionMutex = true;
         _initDone = true;
+        checkFinished();
         return this;
     }
 
@@ -92,20 +96,23 @@ public class Environment extends Observable {
 
     public boolean checkFinished() {
         synchronized (this) {
-            if (_actionMutex) { throw new NotSynchronizedMethodException("'getAllNearbyAgents' method of 'Environment' called whereas the '_actionMutex' was still available."); }
             for (AgentTile agent : _mailBoxes.keySet()) {
                 if (!agent.isSatisfied()) { return false; } }
+            System.out.println("\n\n¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤\nTaquin completed\n¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤\n\n");
             return true; }
+    }
+
+    public Environment killAgents() {
+        _mailBoxes.keySet().forEach(Thread::stop);
+        return this;
     }
 
 
     public void update() {
         synchronized (this) {
-            if (_actionMutex) { throw new NotSynchronizedMethodException("'getAllNearbyAgents' method of 'Environment' called whereas the '_actionMutex' was still available."); }
             _taquinFinished = checkFinished();
             this.setChanged();
             this.notifyObservers();
-            //TODO: remove display
             display(); }
     }
 
@@ -233,7 +240,7 @@ public class Environment extends Observable {
         StringBuilder sb = new StringBuilder();
         for (int lines = 0; lines < _size_y; lines++) {
             for(int columns = 0; columns < _size_x; columns++) {
-                sb.append("|").append(_taquin.get(lines).get(columns).getDisplayName()); }
+                sb.append("|").append(_taquin.get(lines).get(columns).getDisplayConsole()); }
             sb.append("|\n"); }
         return sb.toString();
     }
