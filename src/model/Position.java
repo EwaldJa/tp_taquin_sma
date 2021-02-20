@@ -62,6 +62,22 @@ public class Position {
     }
 
     /**
+     * @param anotherPos l'autre position avec laquelle calculer la distance
+     * @return la distance euclidienne entre la position actuelle et la position passée en paramètre
+     */
+    public double distanceEuclid(Position anotherPos) {
+        return Math.sqrt( Math.pow((this.x - anotherPos.getX()), 2.0) + Math.pow(this.y - anotherPos.getY(), 2.0) );
+    }
+
+    /**
+     * @param anotherPos l'autre position avec laquelle calculer la distance
+     * @return la distance de Manhattan entre la position actuelle et la position passée en paramètre
+     */
+    public double distanceManhattan(Position anotherPos) {
+        return ( Math.abs((this.x - anotherPos.getX())) + Math.abs(this.y - anotherPos.getY()) );
+    }
+
+    /**
      * Augmente la coordonnée des abscisses de cette Position
      * @param toAdd la valeur à ajouter à la coordonnée des abscisses de cette Position
      */
@@ -96,10 +112,7 @@ public class Position {
      * @param toAddX la valeur qu'on cherche à ajouter
      */
     public boolean possibleToAddX(int toAddX) {
-        if (environment.getSize_x() <= (x+toAddX) && (x+toAddX) >= 0) {
-            return false;
-        }
-        return true;
+        return environment.isValidX(x + toAddX);
     }
 
     /**
@@ -107,10 +120,7 @@ public class Position {
      * @param toAddY la valeur qu'on cherche à ajouter
      */
     public boolean possibleToAddY(int toAddY) {
-        if (environment.getSize_y() <= (y+toAddY) && (y+toAddY) >= 0) {
-            return false;
-        }
-        return true;
+        return environment.isValidY(y + toAddY);
     }
 
     /**
@@ -118,7 +128,7 @@ public class Position {
      * @param newX la nouvelle valeur à définir pour la coordonnée des abscisses de cette Position
      */
     public void setX(int newX) {
-        if (environment.getSize_x() <= x && x >= 0) {
+        if (!environment.isValidX(newX)) {
             throw new InvalidCoordinatesException(String.format("x coordinate value '%d' for Position '%s' is not valid", newX, toString()));
         }
         x = newX;
@@ -129,7 +139,7 @@ public class Position {
      * @param newY la nouvelle valeur à définir pour la coordonnée des ordonnées de cette Position
      */
     public void setY(int newY) {
-        if (environment.getSize_y() <= y && y >= 0) {
+        if (!environment.isValidY(newY)) {
             throw new InvalidCoordinatesException(String.format("y coordinate value '%d' for Position '%s' is not valid", newY, toString()));
         }
         y = newY;

@@ -3,6 +3,8 @@ package model;
 import utils.exceptions.EmptyCellException;
 import utils.exceptions.FullCellException;
 
+import java.util.Objects;
+
 public class Cell {
 
     /**
@@ -28,7 +30,7 @@ public class Cell {
     public Cell(int x_coord, int y_coord, Environment w) {
         pos = new Position(x_coord, y_coord, w);
         agent = null;
-        cell_number = (y_coord * w.getSize_x()) + x_coord;
+        cell_number = (y_coord * w.getSizeX()) + x_coord;
     }
 
     /**
@@ -58,9 +60,19 @@ public class Cell {
      */
     public AgentTile removeAgent() {
         if(agent != null) {
-            AgentTile res = agent;
+            AgentTile res = agent.clone();
             agent = null;
             return res; }
+        else {
+            throw new EmptyCellException(String.format("Cell %s does not contain an Agent", pos.toString())); }
+    }
+
+    /**
+     * @return l'agent actuellement présent sur la case
+     */
+    public AgentTile getAgent() {
+        if(agent != null) {
+            return agent; }
         else {
             throw new EmptyCellException(String.format("Cell %s does not contain an Agent", pos.toString())); }
     }
@@ -77,6 +89,22 @@ public class Cell {
     }
 
     /**
+     * @param anotherCell l'autre cellule avec laquelle calculer la distance
+     * @return la distance euclidienne entre la cellule actuelle et la cellule passée en paramètre
+     */
+    public double distanceEuclid(Cell anotherCell) {
+        return pos.distanceEuclid(anotherCell.getPos());
+    }
+
+    /**
+     * @param anotherCell l'autre cellule avec laquelle calculer la distance
+     * @return la distance de Manhattan entre la cellule actuelle et la cellule passée en paramètre
+     */
+    public double distanceManhattan(Cell anotherCell) {
+        return pos.distanceManhattan(anotherCell.getPos());
+    }
+
+    /**
      * @return true si la case contient un agent, false sinon
      */
     public boolean hasAgent() {
@@ -88,8 +116,29 @@ public class Cell {
      */
     public String getDisplayName() {
         if (agent == null) {
-            return ""+cell_number; }
+            return " "; }
         else {
             return agent.getDisplayName(); }
+    }
+
+    /**
+     * @return le numéro de la case
+     */
+    public int getCellNumber() {
+        return cell_number;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cell cell = (Cell) o;
+        return cell_number == cell.cell_number &&
+                Objects.equals(pos, cell.pos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pos, cell_number);
     }
 }

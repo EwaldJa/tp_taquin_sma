@@ -12,8 +12,8 @@ public class Message {
         SATISFIED,
         UNSATISFIED,
         FORWARDED,
-        EXPIRED,
-        NOT_READ
+        NOT_READ,
+        EXPIRED
     }
 
     private long _id; /*Pour différentier 2 messages échangés entre le même couple expéditeur/destinataire*/
@@ -21,10 +21,12 @@ public class Message {
     private Position _senderPos, _recipientPos;
     private RequestType _request;
     private AnswerType _answer;
+    private Message _originalMessage = null;
 
-    public Message() {}
+    public Message() { _id = message_number++; }
 
     public Message(AgentTile sender, AgentTile recipient, Position senderPos, Position recipientPos, RequestType request, AnswerType answer) {
+        _id = message_number++;
         _sender = sender;
         _recipient = recipient;
         _senderPos = senderPos;
@@ -42,8 +44,9 @@ public class Message {
     public Message answer       (AnswerType answer)     { _answer = answer;             return this; }
 
 
-    public boolean isNotExpired(Position currentSenderPos, Position currentRecipientPos) {
-        return getSenderPos().equals(currentSenderPos) && getRecipientPos().equals(currentRecipientPos);
+
+    public boolean isExpired(Position currentSenderPos, Position currentRecipientPos) {
+        return !getSenderPos().equals(currentSenderPos) || !getRecipientPos().equals(currentRecipientPos);
     }
 
 
@@ -70,4 +73,5 @@ public class Message {
     public AnswerType getAnswer() {
         return _answer;
     }
+
 }
