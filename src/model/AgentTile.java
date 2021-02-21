@@ -175,7 +175,7 @@ public class AgentTile extends Thread {
         System.out.print("Agent #" + getId() + " moving proba is " + probaMove);
         if (RandomUtils.randDouble() < probaMove && !availableNearbyCells.isEmpty()) {
             _environment.move(this, availableNearbyCells.get(0));
-            checkSatisfiedReceivedMessage(currentPos);
+            checkSatisfiedReceivedMessages(currentPos);
             expireSentMessages(currentPos);
             System.out.print(", agent moved to Cell #" + availableNearbyCells.get(0).getCellNumber() + " while all available cells were : [");
             for(Cell c:availableNearbyCells) {System.out.print(c.getCellNumber() + ",");}
@@ -184,7 +184,7 @@ public class AgentTile extends Thread {
         else { System.out.println(", agent did not move."); return false; }
     }
 
-    private void checkSatisfiedReceivedMessage(Position oldPos) {
+    private void checkSatisfiedReceivedMessages(Position oldPos) {
         MailBox mailBox = _environment.getMailBox(this);
         mailBox.clearObsolete();
         while ( mailBox.hasNext() ) {

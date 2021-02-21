@@ -86,4 +86,11 @@ public class FrameTaquin extends Frame implements Observer {
         _canvas.requestFocus();
         _movesLabel.setText("Moves : " + _taquin.getNbMoves());
     }
+
+
+    @Override
+    public void dispose() {
+        _taquin.killAgents();
+        super.dispose();
+    }
 }

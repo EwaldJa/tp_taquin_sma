@@ -39,7 +39,7 @@ public class MailBox {
         _readIndex = 0;
     }
 
-    public void delete() {
+    public void deleteFirst() {
         _mailList.remove(0);
     }
 

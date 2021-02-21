@@ -23,7 +23,7 @@ public class CanvasTaquin extends Canvas {
     public static final Color C11 = new Color(13, 59, 150);
     public static final Color C12 = new Color(123, 43, 209);
     public static final Color C13 = new Color(96, 24, 173);
-    public static final Color C14 = new Color(68, 12, 127);
+    public static final Color C14 = new Color(12, 90, 120);
 
     public static final List<Color> COLORS;
 
