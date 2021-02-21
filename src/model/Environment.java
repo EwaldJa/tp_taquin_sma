@@ -99,18 +99,22 @@ public class Environment extends Observable {
             for (AgentTile agent : _mailBoxes.keySet()) {
                 if (!agent.isSatisfied()) { return false; } }
             System.out.println("\n\n¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤\nTaquin completed\n¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤\n\n");
+            _taquinFinished = true;
             return true; }
     }
 
     public Environment killAgents() {
-        _mailBoxes.keySet().forEach(Thread::stop);
-        return this;
+        synchronized (this) {
+            _taquinFinished = true;
+            _mailBoxes.keySet().forEach(Thread::stop);
+            return this;
+        }
     }
 
 
     public void update() {
         synchronized (this) {
-            _taquinFinished = checkFinished();
+            checkFinished();
             this.setChanged();
             this.notifyObservers();
             display(); }
