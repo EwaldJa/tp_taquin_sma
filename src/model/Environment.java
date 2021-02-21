@@ -25,11 +25,6 @@ public class Environment extends Observable {
     private List<List<Cell>> _taquin;
 
     /**
-     * Liste des cellules rangées par ID
-     */
-    private List<Cell> _cellsById;
-
-    /**
      * Les agents associés à leurs positions respectives
      */
     private Map<AgentTile, Position> _agentsPositions;
@@ -51,7 +46,7 @@ public class Environment extends Observable {
         _mailBoxes = Collections.synchronizedMap(new HashMap<>());
         _agentsPositions = Collections.synchronizedMap(new HashMap<>());
         _taquin = Collections.synchronizedList(new ArrayList<>());
-        _cellsById = new ArrayList<>();
+        List<Cell> _cellsById = new ArrayList<>();
         _nbMoves = 0;
         _taquinFinished = false;
         _taquin = new ArrayList<>();

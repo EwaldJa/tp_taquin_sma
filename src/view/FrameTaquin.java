@@ -42,9 +42,9 @@ public class FrameTaquin extends Frame implements Observer {
         _movesLabel = new Label("Moves : " + _taquin.getNbMoves());
         controlPanel.add(_BnewGame);controlPanel.add(_Blaunch);controlPanel.add(_movesLabel);
 
-        Label lblX = new Label("Nb cols : "); _TFinputX = new TextField(2); _TFinputX.setText(String.valueOf(_sizeX));
-        Label lblY = new Label("Nb lignes : "); _TFinputY = new TextField(2); _TFinputY.setText(String.valueOf(_sizeY));
-        Label lblAgents = new Label("Nb agents : "); _TFinputNbAgents = new TextField(2); _TFinputNbAgents.setText(String.valueOf(_nbAgents));
+        Label lblX = new Label("Columns :"); _TFinputX = new TextField(2); _TFinputX.setText(String.valueOf(_sizeX));
+        Label lblY = new Label("Lines :"); _TFinputY = new TextField(2); _TFinputY.setText(String.valueOf(_sizeY));
+        Label lblAgents = new Label("Agents :"); _TFinputNbAgents = new TextField(2); _TFinputNbAgents.setText(String.valueOf(_nbAgents));
         optionPanel.add(lblX);optionPanel.add(this._TFinputX);
         optionPanel.add(lblY);optionPanel.add(this._TFinputY);
         optionPanel.add(lblAgents);optionPanel.add(this._TFinputNbAgents);
